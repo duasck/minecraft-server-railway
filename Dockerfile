@@ -1,8 +1,8 @@
 # Dockerfile para Servidor Minecraft no Railway
 FROM eclipse-temurin:17-jre-jammy
 
-# Instalar wget e outras dependências
-RUN apt-get update && apt-get install -y wget curl && rm -rf /var/lib/apt/lists/*
+# Instalar wget, net-tools e outras dependências
+RUN apt-get update && apt-get install -y wget curl net-tools && rm -rf /var/lib/apt/lists/*
 
 # Criar diretório do servidor
 WORKDIR /minecraft
@@ -14,9 +14,10 @@ RUN wget https://api.papermc.io/v2/projects/paper/versions/1.20.4/builds/497/dow
 COPY server.properties .
 COPY eula.txt .
 COPY start.sh .
+COPY healthcheck.sh .
 
 # Dar permissão de execução
-RUN chmod +x start.sh
+RUN chmod +x start.sh healthcheck.sh
 
 # Expor porta
 EXPOSE 25565
